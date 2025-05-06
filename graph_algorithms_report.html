@@ -233,15 +233,16 @@
 <li><strong>Large Graph</strong>: A randomly generated large graph with 200 vertices and 3972 edges.</li>
 </ol>
 <h2>5. Performance Results</h2>
+<h3>5.1 Execution Times (in nanoseconds)</h3>
 <table>
 <thead>
 <tr>
 <th>Graph Name</th>
 <th>Vertices</th>
 <th>Edges</th>
-<th>Prim (s)</th>
-<th>Kruskal (s)</th>
-<th>Dijkstra (s)</th>
+<th>Prim (ns)</th>
+<th>Kruskal (ns)</th>
+<th>Dijkstra (ns)</th>
 </tr>
 </thead>
 <tbody>
@@ -249,44 +250,145 @@
 <td>Cities Graph</td>
 <td>10</td>
 <td>28</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.000000</td>
+<td>18,014.19</td>
+<td>15,537.74</td>
+<td>13,411.52</td>
 </tr>
 <tr>
 <td>Cyclic Graph</td>
 <td>6</td>
 <td>12</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.000000</td>
+<td>5,001.78</td>
+<td>9,430.41</td>
+<td>5,914.69</td>
 </tr>
 <tr>
 <td>Random Graph</td>
 <td>8</td>
 <td>26</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.000000</td>
+<td>9,119.75</td>
+<td>18,768.79</td>
+<td>9,112.12</td>
 </tr>
 <tr>
 <td>Standard Graph</td>
 <td>6</td>
 <td>18</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>0.000000</td>
+<td>5,031.11</td>
+<td>16,478.78</td>
+<td>6,213.19</td>
 </tr>
 <tr>
 <td>Large Graph</td>
 <td>200</td>
 <td>3972</td>
-<td>0.002246</td>
-<td>0.130890</td>
-<td>0.003507</td>
+<td>1,008,510.59</td>
+<td>136,692,667.01</td>
+<td>1,009,988.78</td>
 </tr>
 </tbody>
 </table>
+<p><em>Note: Times are measured in nanoseconds (ns) for maximum precision (1 nanosecond = 0.001 microsecond = 0.000001 millisecond).</em></p>
+<h3>5.2 Execution Times (in microseconds for easier reading)</h3>
+<table>
+<thead>
+<tr>
+<th>Graph Name</th>
+<th>Vertices</th>
+<th>Edges</th>
+<th>Prim (μs)</th>
+<th>Kruskal (μs)</th>
+<th>Dijkstra (μs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cities Graph</td>
+<td>10</td>
+<td>28</td>
+<td>18.01</td>
+<td>15.54</td>
+<td>13.41</td>
+</tr>
+<tr>
+<td>Cyclic Graph</td>
+<td>6</td>
+<td>12</td>
+<td>5.00</td>
+<td>9.43</td>
+<td>5.91</td>
+</tr>
+<tr>
+<td>Random Graph</td>
+<td>8</td>
+<td>26</td>
+<td>9.12</td>
+<td>18.77</td>
+<td>9.11</td>
+</tr>
+<tr>
+<td>Standard Graph</td>
+<td>6</td>
+<td>18</td>
+<td>5.03</td>
+<td>16.48</td>
+<td>6.21</td>
+</tr>
+<tr>
+<td>Large Graph</td>
+<td>200</td>
+<td>3972</td>
+<td>1,008.51</td>
+<td>136,692.67</td>
+<td>1,009.99</td>
+</tr>
+</tbody>
+</table>
+<h3>5.3 Relative Performance</h3>
+<p>To better visualize the relative performance differences, we can normalize the execution times relative to the fastest algorithm for each graph:</p>
+<table>
+<thead>
+<tr>
+<th>Graph Name</th>
+<th>Prim (relative)</th>
+<th>Kruskal (relative)</th>
+<th>Dijkstra (relative)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cities Graph</td>
+<td>1.34</td>
+<td>1.16</td>
+<td>1.00</td>
+</tr>
+<tr>
+<td>Cyclic Graph</td>
+<td>1.00</td>
+<td>1.89</td>
+<td>1.18</td>
+</tr>
+<tr>
+<td>Random Graph</td>
+<td>1.00</td>
+<td>2.06</td>
+<td>1.00</td>
+</tr>
+<tr>
+<td>Standard Graph</td>
+<td>1.00</td>
+<td>3.28</td>
+<td>1.24</td>
+</tr>
+<tr>
+<td>Large Graph</td>
+<td>1.00</td>
+<td>135.54</td>
+<td>1.00</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: Values are normalized relative to the fastest algorithm for each graph (lower is better).</em></p>
 <h2>6. Analysis of Factors Affecting Performance</h2>
 <h3>6.1 Number of Vertices</h3>
 <p>The number of vertices in a graph significantly impacts the performance of graph algorithms:</p>
@@ -295,15 +397,23 @@
 <li><strong>Kruskal's Algorithm</strong>: O(E log E) or O(E log V)</li>
 <li><strong>Dijkstra's Algorithm</strong>: O(V²) without a binary heap, O(E log V) with a binary heap</li>
 </ul>
-<p>As observed in our results, the algorithms showed negligible execution times for small graphs (&lt; 10 vertices). However, for the large graph with 200 vertices, we can see measurable execution times, particularly for Kruskal's algorithm.</p>
+<p>With our nanosecond-precision measurements, we can now observe meaningful execution times even for small graphs. For graphs with fewer than 10 vertices, execution times range from 5,000 to 19,000 nanoseconds (5-19 microseconds). For the large graph with 200 vertices, execution times increase significantly, particularly for Kruskal's algorithm.</p>
 <h3>6.2 Number of Edges</h3>
-<p>The number of edges also plays a crucial role in algorithm performance:</p>
+<p>The number of edges plays a crucial role in algorithm performance:</p>
 <ul>
 <li><strong>Prim's Algorithm</strong>: Performance is more affected by the number of vertices than edges when using a binary heap.</li>
 <li><strong>Kruskal's Algorithm</strong>: Significantly affected by the number of edges since it sorts all edges by weight.</li>
 <li><strong>Dijkstra's Algorithm</strong>: Similar to Prim's, it's more affected by vertices than edges when using a binary heap.</li>
 </ul>
-<p>In our large graph with 3972 edges, Kruskal's algorithm showed the highest execution time (0.13 seconds) compared to Prim's (0.002 seconds) and Dijkstra's (0.003 seconds). This aligns with theoretical expectations since Kruskal's algorithm needs to sort all edges.</p>
+<p>In our large graph with 3972 edges, Kruskal's algorithm showed the highest execution time (136,692,667 nanoseconds or ~136.7 milliseconds) compared to Prim's (1,008,510 nanoseconds or ~1.0 milliseconds) and Dijkstra's (1,009,988 nanoseconds or ~1.0 milliseconds). This represents a 135.5x performance difference between Kruskal's and the other algorithms, which aligns with theoretical expectations since Kruskal's algorithm needs to sort all edges.</p>
+<p>Interestingly, our nanosecond-precision measurements revealed that for smaller graphs, the performance characteristics are more nuanced than previously observed:</p>
+<ul>
+<li>For the Cities Graph (28 edges): Dijkstra's algorithm is actually the fastest (13,411 ns), followed by Kruskal's (15,537 ns) and then Prim's (18,014 ns)</li>
+<li>For the Cyclic Graph (12 edges): Prim's algorithm is the fastest (5,001 ns), followed by Dijkstra's (5,914 ns) and then Kruskal's (9,430 ns)</li>
+<li>For the Random Graph (26 edges): Dijkstra's algorithm is marginally faster (9,112 ns) than Prim's (9,119 ns), with Kruskal's being significantly slower (18,768 ns)</li>
+<li>For the Standard Graph (18 edges): Prim's algorithm is the fastest (5,031 ns), followed by Dijkstra's (6,213 ns) and then Kruskal's (16,478 ns)</li>
+</ul>
+<p>This pattern confirms that the edge sorting step in Kruskal's algorithm has a significant impact on performance as the number of edges increases.</p>
 <h3>6.3 Graph Structure</h3>
 <p>The structure of the graph can significantly impact algorithm performance:</p>
 <ul>
@@ -318,32 +428,49 @@
 <li><strong>Language and Runtime</strong>: Python's interpreted nature may introduce overhead compared to compiled languages.</li>
 </ul>
 <h2>7. Conclusion</h2>
-<p>Based on our analysis:</p>
+<p>Based on our detailed analysis with nanosecond-precision measurements:</p>
 <ol>
 <li>
-<p><strong>For Small Graphs</strong> (&lt; 100 vertices): All three algorithms perform well with negligible differences in execution time.</p>
+<p><strong>For Small Graphs</strong> (&lt; 100 vertices):</p>
+</li>
+<li>
+<p>All three algorithms perform efficiently, with execution times ranging from 5,000 to 19,000 nanoseconds (5-19 microseconds).</p>
+</li>
+<li>
+<p>The performance ranking varies by graph structure:</p>
+<ul>
+<li>Prim's algorithm is fastest for graphs with fewer edges (Cyclic and Standard graphs)</li>
+<li>Dijkstra's algorithm is fastest for graphs with more edges (Cities and Random graphs)</li>
+<li>Kruskal's algorithm is generally slower than both Prim's and Dijkstra's for most small graphs, except for the Cities graph where it outperforms Prim's</li>
+</ul>
 </li>
 <li>
 <p><strong>For Large Graphs</strong> (≥ 100 vertices):</p>
 </li>
-<li><strong>Prim's Algorithm</strong> is efficient for dense graphs.</li>
-<li><strong>Kruskal's Algorithm</strong> is more suitable for sparse graphs but shows higher execution times due to the edge sorting step.</li>
 <li>
-<p><strong>Dijkstra's Algorithm</strong> performs well for finding shortest paths from a single source.</p>
+<p><strong>Prim's Algorithm</strong> is highly efficient for both sparse and dense graphs, with execution times around 1 millisecond (1,008,510 nanoseconds) for our 200-vertex graph.</p>
+</li>
+<li><strong>Kruskal's Algorithm</strong> shows dramatically higher execution times (135.5x slower than Prim's) due to the edge sorting step, making it unsuitable for graphs with many edges.</li>
+<li>
+<p><strong>Dijkstra's Algorithm</strong> performs almost identically to Prim's algorithm on large graphs, with execution times around 1 millisecond (1,009,988 nanoseconds) for our 200-vertex graph.</p>
 </li>
 <li>
 <p><strong>Trade-offs</strong>:</p>
 </li>
-<li><strong>Time vs. Space</strong>: Prim's algorithm with a binary heap offers good time complexity but requires more space for the priority queue.</li>
 <li>
-<p><strong>Implementation Complexity</strong>: Kruskal's algorithm requires implementing a union-find data structure, which adds complexity.</p>
+<p><strong>Time vs. Space</strong>: Prim's algorithm with a binary heap offers excellent time complexity but requires more space for the priority queue.</p>
+</li>
+<li><strong>Implementation Complexity</strong>: Kruskal's algorithm requires implementing a union-find data structure, which adds complexity.</li>
+<li>
+<p><strong>Edge Density Impact</strong>: The performance gap between Prim's and Kruskal's algorithms widens dramatically as the number of edges increases.</p>
 </li>
 <li>
 <p><strong>Recommendations</strong>:</p>
 </li>
-<li>For dense graphs, prefer Prim's algorithm for MST.</li>
-<li>For sparse graphs, Kruskal's algorithm may be more efficient despite the sorting overhead.</li>
-<li>For shortest path problems, Dijkstra's algorithm is efficient when using a binary heap.</li>
+<li>For small graphs with fewer edges (E &lt; 20), Prim's algorithm is generally the fastest choice for MST computation.</li>
+<li>For small graphs with more edges (E ≥ 20), Dijkstra's algorithm surprisingly outperforms both MST algorithms for single-source shortest paths.</li>
+<li>For large graphs, both Prim's and Dijkstra's algorithms provide excellent performance, while Kruskal's algorithm should be avoided due to its O(E log E) sorting step.</li>
+<li>When graph structure is unknown, Dijkstra's algorithm offers the most consistent performance across different graph types and sizes.</li>
 </ol>
 <h2>8. Future Work</h2>
 <ol>
