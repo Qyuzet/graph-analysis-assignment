@@ -1,0 +1,13 @@
+c IDP Project of Reza Sefidgar at Chair M9 of Technische Universität München.2014 
+c https://www-m9.ma.tum.de/graph-algorithms/mst-prim/index_en.html
+c Standard test for Cyclic Trivial Graph
+c
+p sp 6 6
+c graph contains 6 nodes and 6 arcs
+c
+a 3 1 5
+a 1 2 10
+a 4 3 5
+a 2 4 7
+a 4 5 15
+a 0 1 10

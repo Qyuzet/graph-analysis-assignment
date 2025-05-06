@@ -1,0 +1,32 @@
+c IDP Project of Reza Sefidgar at Chair M9 of Technische Universität München.2014 
+c https://www-m9.ma.tum.de/graph-algorithms/mst-prim/index_en.html
+c Major European Cities 
+c
+c 0: London
+c 1: Berlin
+c 2: Madrid
+c 3: Kiev
+c 4: Rome
+c 5: Paris
+c 6: Minks
+c 7: Stockholm
+c 8: Dublin
+c 9: Vienna
+c
+p sp 10 14
+c graph contains 10 nodes and 14 arcs
+c
+a 0 5 343
+a 1 6 954
+a 1 5 879
+a 2 5 1054
+a 2 4 1364
+a 3 6 433
+a 4 5 1106
+a 8 0 464
+a 0 7 1435
+a 1 7 811
+a 6 7 837
+a 4 9 766
+a 3 9 1053
+a 1 9 524

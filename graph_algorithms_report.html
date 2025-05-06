@@ -1,0 +1,321 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>MST and Shortest Path Algorithms Analysis</title>
+        
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 {
+            color: #333;
+            margin-top: 30px;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+    </style>
+    
+    </head>
+    <body>
+        <h1>Minimum Spanning Tree and Shortest Path Algorithms Analysis</h1>
+<h2>Executive Summary</h2>
+<p>This report presents a comprehensive analysis of Minimum Spanning Tree (MST) and Shortest Path algorithms implemented and tested on various graph datasets. The algorithms implemented include Prim's and Kruskal's algorithms for MST, and Dijkstra's algorithm for shortest path computation.</p>
+<p>The analysis reveals that for small graphs (fewer than 10 vertices), all algorithms perform efficiently with negligible execution times. However, for larger graphs (200+ vertices), significant performance differences emerge. Kruskal's algorithm shows higher execution times compared to Prim's algorithm for MST computation, primarily due to the edge sorting step. Dijkstra's algorithm demonstrates efficient performance for shortest path computation, comparable to Prim's algorithm.</p>
+<p>Based on our findings, we recommend using Prim's algorithm for MST computation in dense graphs and Dijkstra's algorithm for shortest path problems. Kruskal's algorithm may be more suitable for very sparse graphs despite its higher overhead from sorting edges.</p>
+<h2>1. Introduction</h2>
+<p>Graph algorithms are fundamental in computer science and have numerous applications in network design, transportation planning, circuit design, and many other fields. This report focuses on two important classes of graph algorithms:</p>
+<ol>
+<li>
+<p><strong>Minimum Spanning Tree (MST) Algorithms</strong>: These algorithms find a subset of edges that connect all vertices in a graph with the minimum possible total edge weight.</p>
+</li>
+<li>
+<p><strong>Shortest Path Algorithms</strong>: These algorithms find the path between two vertices in a graph such that the sum of the weights of its constituent edges is minimized.</p>
+</li>
+</ol>
+<p>The primary objectives of this analysis are:</p>
+<ul>
+<li>To implement and compare the performance of Prim's and Kruskal's algorithms for MST computation</li>
+<li>To implement and analyze Dijkstra's algorithm for shortest path computation</li>
+<li>To evaluate the performance of these algorithms on various graph datasets</li>
+<li>To identify factors that affect algorithm performance</li>
+</ul>
+<h2>2. Algorithm Descriptions</h2>
+<h3>2.1 Prim's Algorithm for MST</h3>
+<p>Prim's algorithm builds the MST by adding edges one at a time, starting from an arbitrary vertex and always adding the lowest-weight edge that connects a vertex in the MST to a vertex outside the MST.</p>
+<p><strong>Pseudocode</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">function</span><span class="w"> </span><span class="nf">Prim</span><span class="p">(</span>G, start<span class="p">):</span>
+<span class="w">    </span><span class="n">Initialize</span><span class="w"> </span><span class="nb">empty</span><span class="w"> </span><span class="n">MST</span>
+<span class="w">    </span><span class="n">Initialize</span><span class="w"> </span><span class="n">priority</span><span class="w"> </span><span class="n">queue</span><span class="w"> </span><span class="n">PQ</span>
+<span class="w">    </span><span class="n">For</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">vertex</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">G</span><span class="p">:</span>
+<span class="w">        </span><span class="n">Set</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">infinity</span>
+<span class="w">        </span><span class="n">Set</span><span class="w"> </span><span class="n">parent</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">null</span>
+<span class="w">    </span><span class="n">Set</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="nb">start</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Add</span><span class="w"> </span><span class="nb">all</span><span class="w"> </span><span class="n">vertices</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">PQ</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">their</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="nb">values</span>
+
+<span class="w">    </span><span class="n">While</span><span class="w"> </span><span class="n">PQ</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="nb">empty</span><span class="p">:</span>
+<span class="w">        </span><span class="n">u</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Extract</span><span class="o">-</span><span class="n">Min</span><span class="p">(</span><span class="n">PQ</span><span class="p">)</span>
+<span class="w">        </span><span class="n">Add</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">MST</span>
+<span class="w">        </span><span class="n">If</span><span class="w"> </span><span class="n">parent</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="nb">null</span><span class="p">:</span>
+<span class="w">            </span><span class="n">Add</span><span class="w"> </span><span class="n">edge</span><span class="w"> </span><span class="p">(</span><span class="n">parent</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="w"> </span><span class="n">u</span><span class="p">)</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">MST</span>
+
+<span class="w">        </span><span class="n">For</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">neighbor</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">u</span><span class="p">:</span>
+<span class="w">            </span><span class="n">If</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">PQ</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">weight</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+<span class="w">                </span><span class="n">Set</span><span class="w"> </span><span class="n">parent</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">u</span>
+<span class="w">                </span><span class="n">Set</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">weight</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+<span class="w">                </span><span class="n">Update</span><span class="w"> </span><span class="n">v</span><span class="o">&#39;</span><span class="n">s</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">PQ</span>
+
+<span class="w">    </span><span class="n">Return</span><span class="w"> </span><span class="n">MST</span>
+</code></pre></div>
+
+<p><strong>Time Complexity</strong>: O(V²) without a binary heap, O(E log V) with a binary heap</p>
+<h3>2.2 Kruskal's Algorithm for MST</h3>
+<p>Kruskal's algorithm builds the MST by considering edges in ascending order of weight and adding them to the MST if they don't create a cycle.</p>
+<p><strong>Pseudocode</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">function</span><span class="w"> </span><span class="nf">Kruskal</span><span class="p">(</span>G<span class="p">):</span>
+<span class="w">    </span><span class="n">Initialize</span><span class="w"> </span><span class="nb">empty</span><span class="w"> </span><span class="n">MST</span>
+<span class="w">    </span><span class="n">Sort</span><span class="w"> </span><span class="nb">all</span><span class="w"> </span><span class="nb">edges</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="n">decreasing</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">weight</span>
+<span class="w">    </span><span class="n">Initialize</span><span class="w"> </span><span class="n">disjoint</span><span class="o">-</span><span class="nb">set</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">structure</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">vertex</span>
+
+<span class="w">    </span><span class="n">For</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">edge</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">sorted</span><span class="w"> </span><span class="nb">edges</span><span class="p">:</span>
+<span class="w">        </span><span class="n">If</span><span class="w"> </span><span class="n">Find</span><span class="o">-</span><span class="n">Set</span><span class="p">(</span><span class="n">u</span><span class="p">)</span><span class="w"> </span>!<span class="p">=</span><span class="w"> </span><span class="n">Find</span><span class="o">-</span><span class="n">Set</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<span class="w">            </span><span class="n">Add</span><span class="w"> </span><span class="n">edge</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">MST</span>
+<span class="w">            </span><span class="n">Union</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">Return</span><span class="w"> </span><span class="n">MST</span>
+</code></pre></div>
+
+<p><strong>Time Complexity</strong>: O(E log E) or O(E log V)</p>
+<h3>2.3 Dijkstra's Algorithm for Shortest Path</h3>
+<p>Dijkstra's algorithm finds the shortest path from a source vertex to all other vertices in a graph with non-negative edge weights.</p>
+<p><strong>Pseudocode</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">function</span><span class="w"> </span><span class="nf">Dijkstra</span><span class="p">(</span>G, start<span class="p">):</span>
+<span class="w">    </span><span class="n">Initialize</span><span class="w"> </span><span class="n">distance</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">infinity</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nb">all</span><span class="w"> </span><span class="n">vertices</span><span class="w"> </span><span class="n">v</span>
+<span class="w">    </span><span class="n">Set</span><span class="w"> </span><span class="n">distance</span><span class="p">[</span><span class="nb">start</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Initialize</span><span class="w"> </span><span class="n">priority</span><span class="w"> </span><span class="n">queue</span><span class="w"> </span><span class="n">PQ</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">start</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Initialize</span><span class="w"> </span><span class="nb">empty</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">visited</span><span class="w"> </span><span class="n">vertices</span>
+
+<span class="w">    </span><span class="n">While</span><span class="w"> </span><span class="n">PQ</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="nb">empty</span><span class="p">:</span>
+<span class="w">        </span><span class="p">(</span><span class="n">dist</span><span class="p">,</span><span class="w"> </span><span class="n">u</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Extract</span><span class="o">-</span><span class="n">Min</span><span class="p">(</span><span class="n">PQ</span><span class="p">)</span>
+
+<span class="w">        </span><span class="n">If</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">S</span><span class="p">:</span>
+<span class="w">            </span><span class="n">Continue</span>
+
+<span class="w">        </span><span class="n">Add</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">S</span>
+
+<span class="w">        </span><span class="n">For</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="n">neighbor</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">u</span><span class="p">:</span>
+<span class="w">            </span><span class="n">If</span><span class="w"> </span><span class="n">distance</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">weight</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">distance</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+<span class="w">                </span><span class="n">Set</span><span class="w"> </span><span class="n">distance</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">distance</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">weight</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+<span class="w">                </span><span class="n">Add</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="p">[</span><span class="n">v</span><span class="p">],</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">PQ</span>
+
+<span class="w">    </span><span class="n">Return</span><span class="w"> </span><span class="n">distance</span>
+</code></pre></div>
+
+<p><strong>Time Complexity</strong>: O(V²) without a binary heap, O(E log V) with a binary heap</p>
+<h2>3. Implementation Details</h2>
+<p>All algorithms were implemented in Python using the following data structures:</p>
+<ul>
+<li><strong>Graph Representation</strong>: Adjacency list representation using dictionaries</li>
+<li><strong>Priority Queue</strong>: Binary heap implementation using Python's <code>heapq</code> module</li>
+<li><strong>Disjoint-Set</strong>: Union-find data structure with path compression and union by rank optimizations</li>
+</ul>
+<p>The implementation includes:</p>
+<ol>
+<li>A <code>Graph</code> class with methods for adding vertices and edges, and for running the MST and shortest path algorithms</li>
+<li>Functions for loading graph data from various file formats</li>
+<li>Analysis scripts for measuring and comparing algorithm performance</li>
+</ol>
+<h2>4. Graph Datasets</h2>
+<p>The analysis was performed on the following graph datasets:</p>
+<ol>
+<li><strong>Cities Graph</strong>: A graph representing major European cities with 10 vertices and 28 edges. Edge weights represent distances between cities.</li>
+<li><strong>Cyclic Graph</strong>: A simple cyclic graph with 6 vertices and 12 edges.</li>
+<li><strong>Random Graph</strong>: A randomly generated graph with 8 vertices and 26 edges.</li>
+<li><strong>Standard Graph</strong>: A standard test graph with 6 vertices and 18 edges.</li>
+<li><strong>Large Graph</strong>: A randomly generated large graph with 200 vertices and 3972 edges.</li>
+</ol>
+<h2>5. Performance Results</h2>
+<table>
+<thead>
+<tr>
+<th>Graph Name</th>
+<th>Vertices</th>
+<th>Edges</th>
+<th>Prim (s)</th>
+<th>Kruskal (s)</th>
+<th>Dijkstra (s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cities Graph</td>
+<td>10</td>
+<td>28</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr>
+<td>Cyclic Graph</td>
+<td>6</td>
+<td>12</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr>
+<td>Random Graph</td>
+<td>8</td>
+<td>26</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr>
+<td>Standard Graph</td>
+<td>6</td>
+<td>18</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr>
+<td>Large Graph</td>
+<td>200</td>
+<td>3972</td>
+<td>0.002246</td>
+<td>0.130890</td>
+<td>0.003507</td>
+</tr>
+</tbody>
+</table>
+<h2>6. Analysis of Factors Affecting Performance</h2>
+<h3>6.1 Number of Vertices</h3>
+<p>The number of vertices in a graph significantly impacts the performance of graph algorithms:</p>
+<ul>
+<li><strong>Prim's Algorithm</strong>: O(V²) without a binary heap, O(E log V) with a binary heap</li>
+<li><strong>Kruskal's Algorithm</strong>: O(E log E) or O(E log V)</li>
+<li><strong>Dijkstra's Algorithm</strong>: O(V²) without a binary heap, O(E log V) with a binary heap</li>
+</ul>
+<p>As observed in our results, the algorithms showed negligible execution times for small graphs (&lt; 10 vertices). However, for the large graph with 200 vertices, we can see measurable execution times, particularly for Kruskal's algorithm.</p>
+<h3>6.2 Number of Edges</h3>
+<p>The number of edges also plays a crucial role in algorithm performance:</p>
+<ul>
+<li><strong>Prim's Algorithm</strong>: Performance is more affected by the number of vertices than edges when using a binary heap.</li>
+<li><strong>Kruskal's Algorithm</strong>: Significantly affected by the number of edges since it sorts all edges by weight.</li>
+<li><strong>Dijkstra's Algorithm</strong>: Similar to Prim's, it's more affected by vertices than edges when using a binary heap.</li>
+</ul>
+<p>In our large graph with 3972 edges, Kruskal's algorithm showed the highest execution time (0.13 seconds) compared to Prim's (0.002 seconds) and Dijkstra's (0.003 seconds). This aligns with theoretical expectations since Kruskal's algorithm needs to sort all edges.</p>
+<h3>6.3 Graph Structure</h3>
+<p>The structure of the graph can significantly impact algorithm performance:</p>
+<ul>
+<li><strong>Cyclic vs. Acyclic</strong>: Cycles require additional checks in MST algorithms, particularly in Kruskal's algorithm where the union-find data structure is used to detect cycles.</li>
+<li><strong>Connected vs. Disconnected</strong>: Disconnected graphs may require special handling, especially for MST algorithms that assume connectivity.</li>
+<li><strong>Weight Distribution</strong>: Uniform weights vs. varied weights can affect the performance of priority queue operations.</li>
+</ul>
+<h3>6.4 Implementation Details</h3>
+<p>Implementation details can significantly affect performance:</p>
+<ul>
+<li><strong>Data Structures</strong>: Our implementation uses binary heaps (via Python's heapq) for Prim's and Dijkstra's algorithms, and a disjoint-set data structure for Kruskal's algorithm.</li>
+<li><strong>Language and Runtime</strong>: Python's interpreted nature may introduce overhead compared to compiled languages.</li>
+</ul>
+<h2>7. Conclusion</h2>
+<p>Based on our analysis:</p>
+<ol>
+<li>
+<p><strong>For Small Graphs</strong> (&lt; 100 vertices): All three algorithms perform well with negligible differences in execution time.</p>
+</li>
+<li>
+<p><strong>For Large Graphs</strong> (≥ 100 vertices):</p>
+</li>
+<li><strong>Prim's Algorithm</strong> is efficient for dense graphs.</li>
+<li><strong>Kruskal's Algorithm</strong> is more suitable for sparse graphs but shows higher execution times due to the edge sorting step.</li>
+<li>
+<p><strong>Dijkstra's Algorithm</strong> performs well for finding shortest paths from a single source.</p>
+</li>
+<li>
+<p><strong>Trade-offs</strong>:</p>
+</li>
+<li><strong>Time vs. Space</strong>: Prim's algorithm with a binary heap offers good time complexity but requires more space for the priority queue.</li>
+<li>
+<p><strong>Implementation Complexity</strong>: Kruskal's algorithm requires implementing a union-find data structure, which adds complexity.</p>
+</li>
+<li>
+<p><strong>Recommendations</strong>:</p>
+</li>
+<li>For dense graphs, prefer Prim's algorithm for MST.</li>
+<li>For sparse graphs, Kruskal's algorithm may be more efficient despite the sorting overhead.</li>
+<li>For shortest path problems, Dijkstra's algorithm is efficient when using a binary heap.</li>
+</ol>
+<h2>8. Future Work</h2>
+<ol>
+<li>Implement and compare other shortest path algorithms (e.g., Bellman-Ford, Floyd-Warshall).</li>
+<li>Test on even larger graphs to better observe performance differences.</li>
+<li>Optimize implementations for better performance.</li>
+<li>Analyze memory usage alongside execution time.</li>
+<li>Implement parallel versions of these algorithms to leverage multi-core processors.</li>
+</ol>
+<h2>Appendix A: Code Implementation</h2>
+<p>The implementation of the algorithms can be found in the following files:</p>
+<ol>
+<li><code>graph.py</code>: Contains the Graph class and algorithm implementations</li>
+<li><code>graph_loader.py</code>: Contains functions for loading graph data from files</li>
+<li><code>analyze_graphs.py</code>: Contains code for analyzing algorithm performance</li>
+<li><code>visualize_graphs.py</code>: Contains code for visualizing graphs and MSTs</li>
+</ol>
+        <div class="footer">
+            <p>MST and Shortest Path Algorithms Analysis Report</p>
+        </div>
+    </body>
+    </html>
+    
