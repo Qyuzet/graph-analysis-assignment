@@ -6,6 +6,31 @@
         <title>MST and Shortest Path Algorithms Analysis</title>
         
     <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 1cm;
+            }
+            body {
+                font-size: 12pt;
+            }
+            h1 {
+                font-size: 18pt;
+            }
+            h2 {
+                font-size: 16pt;
+            }
+            h3 {
+                font-size: 14pt;
+            }
+            pre, code {
+                font-size: 10pt;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -64,10 +89,33 @@
             border-top: 1px solid #eee;
             padding-top: 20px;
         }
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .print-button:hover {
+            background-color: #45a049;
+        }
     </style>
+    
+        
+    <script>
+        function printReport() {
+            window.print();
+        }
+    </script>
     
     </head>
     <body>
+        <button class="print-button no-print" onclick="printReport()">Save as PDF</button>
         <h1>Minimum Spanning Tree and Shortest Path Algorithms Analysis</h1>
 <h2>Executive Summary</h2>
 <p>This report presents a comprehensive analysis of Minimum Spanning Tree (MST) and Shortest Path algorithms implemented and tested on various graph datasets. The algorithms implemented include Prim's and Kruskal's algorithms for MST, and Dijkstra's algorithm for shortest path computation.</p>
